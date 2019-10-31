@@ -1,11 +1,25 @@
 from django.db import models
 from django.core.validators import MaxValueValidator,MinValueValidator
+
 class Branch(models.Model):
 	branchName = models.CharField(max_length=50, default="")
 	num= models.IntegerField(default=0,validators=[MinValueValidator(0)])
 
 	def __str__(self):
 		return self.branchName
+
+BRANCH_CHOICES = [
+	('CSE', 'Computer Science and Engineering'),
+	('MNC', 'Mathematics and Computing'),
+	('ECE', 'Electronics and Communication Engineering'),
+	('EEE', 'Electronics and Electrical Engineering'),
+	('ME', 'Mechanical Engineering'),
+	('CE', 'Civil Engineering'),
+	('CL', 'Chemical Engineering'),
+	('EP' , 'Engineering Physics'),
+	('CST','Chemical Science and Technology'),
+	('BT','Biotechnology'),
+]
 
 class Student(models.Model):
 	name = models.CharField(max_length=200)
