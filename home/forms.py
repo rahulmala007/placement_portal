@@ -6,6 +6,9 @@ class StudentPlacedForm(forms.ModelForm):
 	class Meta:
 		model = Student
 		fields = [
-			'name',
-			
+			'placed',
+			'company',
+			'sector',
+			'profile',	
 		]
+		

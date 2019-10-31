@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{student.name}}</title>
+</head>
+<body>
+	<strong>{{student.name}}</strong>
+			{{student.program}}
+			{{student.branch.branchName}}
+			<hr>
+			{% if student.placed is False %}
+			<form method="POST">
+				{% csrf_token %}
+				{{form.as_p}}
+				<input type="submit" value="Save">
+			</form>
+			{% else %}
+			<ul>
+				<li>{{student.company}}</li>
+				<br>
+				<li>{{student.profile}}</li>
+				<br>
+				<li>{{student.sector}}</li>
+				<br>
+			</ul>
+			{% endif %}
+</body>
+</html>

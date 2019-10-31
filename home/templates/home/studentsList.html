@@ -7,9 +7,12 @@
 	<ul>
 	{% for student in students %}
 	<li>
+		<a href="{% url 'home:studentDetails' student.id %}">
 		{{student.name}}
+		</a>
 		<br>
-		{{student.branch.branchname}}
+		{{student.branch.branchName}}
+		<br><hr>
 	</li>
 	{% endfor %}
 	</ul>
