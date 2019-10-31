@@ -1,6 +1,17 @@
 from django.db import models
 
-
+BRANCH_CHOICES = [
+	('CSE', 'Computer Science and Engineering'),
+	('MNC', 'Mathematics and Computing'),
+	('ECE', 'Electronics and Communication Engineering'),
+	('EEE', 'Electronics and Electrical Engineering'),
+	('ME', 'Mechanical Engineering'),
+	('CE', 'Civil Engineering'),
+	('CL', 'Chemical Engineering'),
+	('EP' , 'Engineering Physics'),
+	('CST','Chemical Science and Technology'),
+	('BT','Biotechnology'),
+]
 class Student(models.Model):
 	name = models.CharField(max_length=200)
 
