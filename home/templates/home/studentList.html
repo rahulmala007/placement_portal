@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Students</title>
+</head>
+<body>
+	<ul>
+	{% for student in students %}
+	<li>
+		{{student.name}}
+		<br>
+		{{student.branch.branchname}}
+	</li>
+	{% endfor %}
+	</ul>
+</body>
+</html>
