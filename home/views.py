@@ -31,7 +31,11 @@ def studentDetails(request, student_id):
 			student.company = company
 			student.sector = sector
 			student.profile = profile
+			student.branch.num+=1
+			print (student.branch.num)
+			print("check")
 			student.save()
+			student.branch.save()
 		return redirect('home:students')
 	else:
 		form = StudentPlacedForm()
@@ -42,7 +46,9 @@ def studentDetails(request, student_id):
 			'student': student,
 			}
 		else:
+
 			 context = {
+			'form':form,
 			'student': student,
 			}
 

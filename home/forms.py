@@ -10,5 +10,7 @@ class StudentPlacedForm(forms.ModelForm):
 			'company',
 			'sector',
 			'profile',	
+			'day',
+			'slot',
 		]
 		

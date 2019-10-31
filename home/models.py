@@ -21,8 +21,7 @@ class Branch(models.Model):
 		choices=BRANCH_CHOICES,
 		default='CSE'
 		)
-	num= models.IntegerField(default=0,validators=[MinValueValidator(0)])
-
+	num = models.IntegerField(default=0,validators=[MinValueValidator(0)])
 	def __str__(self):
 		return self.branchName
 
