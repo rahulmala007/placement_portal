@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -70,3 +71,20 @@ def studentDetails(request, student_id):
 
 
 		return render(request, 'home/studentDetails.html', context)
+
+
+def changestatus(request):
+	if request.method == 'POST':
+		id = request.POST['student_id']
+		student = Student.objects.get(id=id)
+		student.placed = False
+		student.company = ''
+		student.sector = ''
+		student.profile = ''
+		student.slot = 'S1'
+		student.day = 0
+
+		student.save()
+
+	# return redirect('home:studentDetails' student.id')
+	return redirect('home:studentDetails', student_id= id)
