@@ -6,7 +6,7 @@
 <body>
 	<strong>{{student.name}}</strong>
 			{{student.program}}
-			{{student.branch.branchName}}
+			{{student.branch.get_branchName_display}}
 			<hr>
 			{% if student.placed is False %}
 			<form method="POST">

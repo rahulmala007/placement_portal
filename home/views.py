@@ -27,15 +27,31 @@ def studentDetails(request, student_id):
 			company = form.cleaned_data.get('company')
 			sector = form.cleaned_data.get('sector')
 			profile = form.cleaned_data.get('profile')
+			day = form.cleaned_data.get('day')
+			slot = form.cleaned_data.get('slot')
 			student.placed = True
 			student.company = company
 			student.sector = sector
 			student.profile = profile
 			student.branch.num+=1
-			print (student.branch.num)
-			print("check")
+
+			dobj = Day.objects.filter(dayNum=day, branch=student.branch)
+			# print(dobj)
+			# print("CCCCCCCCCCCCCCCCCCCC")
+			if dobj.count()==0:
+
+				Day.objects.create(dayNum=day, branch=student.branch)
+				dobj = Day.objects.get(dayNum=day, branch=student.branch)
+			else:
+				dobj = dobj[0]
+
+			dobj.num += 1
+			dobj.save()
+			# print (student.daynum)
+			# print("check")
 			student.save()
 			student.branch.save()
+			
 		return redirect('home:students')
 	else:
 		form = StudentPlacedForm()
