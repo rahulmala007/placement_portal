@@ -88,3 +88,9 @@ def changestatus(request):
 
 	# return redirect('home:studentDetails' student.id')
 	return redirect('home:studentDetails', student_id= id)
+
+def showStudent(request):
+	allstudents=Student.objects.all()
+	context={'allstudents':allstudents}
+	return render(request,'home/showStudent.html',context)
+
