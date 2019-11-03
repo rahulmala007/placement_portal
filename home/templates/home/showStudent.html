@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{student.name}}</title>
+</head>
+<body>
+	<h1>Placement Details Of Students</h1>
+<table border="1" width="600">
+<tr>
+<td>Name</td>
+<td>Program</td>
+<td>Branch</td>
+<td>Placed</td>
+<td>Company</td>
+<td>Day</td>
+<td>Slot</td>
+<td>Sector</td>
+<td>Profile</td>
+</tr>
+
+{% for student in allstudents %}
+<tr>
+<td> {{ student.name }}</td>
+<td> {{ student.programs }}</td>
+<td> {{ student.branch }}</td>
+<td> {{ student.placed }}</td>
+<td> {{ student.company }}</td>
+<td> {{ student.day }}</td>
+<td> {{ student.slot }}</td>
+<td> {{ student.sector}}</td>
+<td> {{ student.profile }}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+</body>
