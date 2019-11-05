@@ -9,10 +9,10 @@
 			{{student.branch.get_branchName_display}}
 			<hr>
 			{% if student.placed is False %}
-			<form method="POST">
+			<form method="POST" name="myform" id="myform" onsubmit="return func() ">
 				{% csrf_token %}
 				{{form.as_p}}
-				<input type="submit" value="Save">
+				<input type="submit" value="Save" id="submit">
 			</form>
 			{% else %}
 			<ul>
@@ -42,7 +42,35 @@
 				
 				</script> -->
 			{% endif %}
+<script>
 
+    var el=document.getElementsByTagName("input")
+    var sub= document.getElementById("submit")
+    function func() {
+        let x=true;
+        console.log(el)
+        for (let i = 0;i < el.length;i++)
+        {
+            if (el[i].value.length == 0) {
+                x=false;
+                console.log(x);
+
+            }
+
+        }
+        var slot=document.getElementById("id_slot")
+        if(slot.value.length == 0)
+        {
+            x=false
+        }
+        if(x===false)
+        {
+             alert("PLease fill all fields");
+        }
+        return x;
+    }
+
+</script>
 
 </body>
 </html>
