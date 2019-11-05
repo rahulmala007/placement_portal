@@ -141,4 +141,21 @@ def showStudent(request):
 	context={'allstudents':allstudents}
 	return render(request,'home/showStudent.html',context)
 
+def searchStudent(request):
+	if request.method=="POST":
+		search_text=request.POST['search_text']
+		print(search_text)
+		students = Student.objects.filter(name__contains = search_text)
+		students |= Student.objects.filter(company__contains = search_text)
+		students |= Student.objects.filter(branch__branchName__contains = search_text)
+
+		
+
+
+	else:
+		search_text=" "
+		students=[]
+
+	return render(request,'home/ajax_searchStudent.html',{'students':students})
+
 

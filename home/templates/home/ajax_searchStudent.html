@@ -1,42 +1,20 @@
-{% load static %}
-<!DOCTYPE html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
-	<title>Placement</title>
-	<script src="{% static "home/jquery-3.4.1.js" %}"></script>
-    <script src="{% static "home/ajaxStudent.js" %}"></script>
-	
+	<title>{{student.name}}</title>
 </head>
 <body>
-	<h1>Placement Details Of Students</h1>
-    
+	<h1>Placement Details Of Students</h1> -->
 
-    <h3>Search here</h3>
-    <form id="dsearchform">{% csrf_token %}
-    <input type="text" id="searchStudent" name="searchStudent" />
-    </form>
-    
-    <div id="search_results"></div>
-
-	<ul id="mainlist">
-	
-	</ul>
-
-
-	
-	
-
-
-<script>
-    document.getElementById("dsearchform").reset();
-
-</script>
-
-
-
+	{% if students.count > 0 %}
 
 <table border="1" width="100%">
-     <tr>
+<tr>
 <td>Name</td>
 <td>Program</td>
 <td>Branch</td>
@@ -49,7 +27,7 @@
 <td>Profile</td>
 </tr>
 
-{% for student in allstudents %}
+{% for student in students %}
 <tr>
 <td> {{ student.name }}</td>
 <td> {{ student.programs }}</td>
@@ -73,6 +51,9 @@
 </tr>
 {% endfor %}
 </table>
-
-
+{% else %}
+<li>Nothing to show</li>
+{% endif %}
+<!-- 
 </body>
+</html> -->
