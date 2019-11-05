@@ -37,6 +37,8 @@ def studentDetails(request, student_id):
 			student.sector = sector
 			student.profile = profile
 			student.branch.num+=1
+			if not placed or company is "" or sector is "" or profile is "":
+					return rende
 
 			dobj = Day.objects.filter(dayNum=day, branch=student.branch)
 			# print(dobj)
