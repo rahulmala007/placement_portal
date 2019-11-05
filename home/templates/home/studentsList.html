@@ -9,14 +9,13 @@
 
 <body>
     <h3>Search here</h3>
-    <form>{% csrf_token %}
+    <form id="dsearchform">{% csrf_token %}
     <input type="text" id="search" name="search" />
     </form>
 
-    <ul id="search-results">
-    </ul>
+    <div id="search_results"></div>
 
-	<ul>
+	<ul id="mainlist">
 	{% for student in students %}
 	<li>Name:
 		<a href="{% url 'home:studentDetails' student.id %}">
@@ -31,5 +30,14 @@
 	</li>
 	{% endfor %}
 	</ul>
+
+<script>
+    document.getElementById("dsearchform").reset();
+
+</script>
+
+
 </body>
 </html>
+
+

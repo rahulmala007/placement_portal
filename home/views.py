@@ -100,6 +100,36 @@ def search(request):
 		search_text=request.POST['search_text']
 		print(search_text)
 		students = Student.objects.filter(name__contains = search_text)
+		students |= Student.objects.filter(company__contains = search_text)
+		students |= Student.objects.filter(branch__branchName__contains = search_text)
+
+		# stul = []
+
+		# BRANCH_CHOICES = [
+		# 	('CSE', 'Computer Science and Engineering'),
+		# 	('MNC', 'Mathematics and Computing'),
+		# 	('ECE', 'Electronics and Communication Engineering'),
+		# 	('EEE', 'Electronics and Electrical Engineering'),
+		# 	('ME', 'Mechanical Engineering'),
+		# 	('CE', 'Civil Engineering'),
+		# 	('CL', 'Chemical Engineering'),
+		# 	('EP' , 'Engineering Physics'),
+		# 	('CST','Chemical Science and Technology'),
+		# 	('BT','Biotechnology'),
+		# ]
+
+		# for tup in BRANCH_CHOICES:
+		# 	if search_text in tup[1]:
+				
+				
+
+		# for stu in Student.objects.all():
+		# 	if search_text in stu.branch.get_branchName_display():
+		# 		stul.append(stu);
+
+		# students |=stu
+
+
 	else:
 		search_text=" "
 		students=[]

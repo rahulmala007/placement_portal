@@ -16,6 +16,10 @@ $(function() {
 });
 
 function searchSuccess(data, textStatus, jqXHR)
-{
-    $('#search-results').html(data)
+{   
+    let lis = document.getElementById("mainlist");
+    // console.log(sres.childNodes.length    )
+        lis.style.display = "none";
+
+    $('#search_results').html(data)
 }
