@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,render_to_response
 from .models import *
 from .forms import *
+from django.template import RequestContext
+from django.template.context_processors import csrf
 from django.http import HttpResponseRedirect
 
 
@@ -8,13 +10,13 @@ def index(request):
 	return render(request, 'home/home.html')
 
 def studentsList(request):
+
 	students = Student.objects.all()
-	context = {
-		'students': students,
-	}
+	context = {}
+	context.update(csrf(request))
+	context['students']=Student.objects.all()
 
-	return render(request, 'home/studentsList.html', context)
-
+	return render_to_response('home/studentsList.html',context)
 
 def studentDetails(request, student_id):
 
@@ -88,3 +90,14 @@ def changestatus(request):
 
 	# return redirect('home:studentDetails' student.id')
 	return redirect('home:studentDetails', student_id= id)
+
+def search(request):
+	if request.method=="POST":
+		search_text=request.POST['search_text']
+		print(search_text)
+		students = Student.objects.filter(name__contains = search_text)
+	else:
+		search_text=" "
+		students=[]
+
+	return render(request,'home/ajax_search.html',{'students':students})

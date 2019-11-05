@@ -13,4 +13,3 @@ class StudentPlacedForm(forms.ModelForm):
 			'day',
 			'slot',
 		]
-		

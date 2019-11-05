@@ -1,0 +1,10 @@
+{% if students.count > 0 %}
+    <ul class="students">
+    {% for student in students %}
+    <li>{{ student.name }}</li>
+    {% endfor %}
+
+    </ul>
+{% else %}
+    <li>Nothing to show</li>
+{% endif %}
