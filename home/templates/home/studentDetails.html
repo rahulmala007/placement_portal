@@ -4,9 +4,10 @@
 	<title>{{student.name}}</title>
 </head>
 <body>
-	<strong>{{student.name}}</strong>
-			{{student.program}}
-			{{student.branch.get_branchName_display}}
+	<strong>Name: {{student.name}}</strong>&nbsp &nbsp &nbsp
+	<strong>Program: {{student.programs}}</strong>&nbsp &nbsp &nbsp
+	<strong>Branch: {{student.branch.get_branchName_display}}</strong>&nbsp &nbsp &nbsp
+	<strong>Roll No: {{student.roll}}</strong>
 			<hr>
 			{% if student.placed is False %}
 			<form method="POST" name="myform" id="myform" onsubmit="return func() ">
@@ -16,11 +17,11 @@
 			</form>
 			{% else %}
 			<ul>
-				<li>{{student.company}}</li>
+				<li>Company: {{student.company}}</li>
 				<br>
-				<li>{{student.profile}}</li>
+				<li>Profile: {{student.profile}}</li>
 				<br>
-				<li>{{student.sector}}</li>
+				<li>Sector: {{student.sector}}</li>
 				<br>
 			</ul>
 			<!-- <form method="POST" >

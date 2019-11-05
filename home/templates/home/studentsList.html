@@ -18,13 +18,16 @@
 
 	<ul>
 	{% for student in students %}
-	<li>
+	<li>Name:
 		<a href="{% url 'home:studentDetails' student.id %}">
-		{{student.name}}
+		 {{student.name}}
 		</a>
 		<br>
-		{{student.branch.get_branchName_display}}
-		<br><hr>
+		Branch: {{student.branch.get_branchName_display}}
+		<br>
+        Roll No: {{ student.roll}}
+		<hr>
+
 	</li>
 	{% endfor %}
 	</ul>

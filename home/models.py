@@ -44,6 +44,7 @@ class Student(models.Model):
 	)	
 	day=models.IntegerField(validators=[MaxValueValidator(10),MinValueValidator(0)],default=0)
 	branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
+	roll=models.CharField(max_length = 50, unique= True)
 	company = models.CharField(max_length=100, blank=True)
 	placed = models.BooleanField(default=False)
 	sector = models.CharField(max_length=100, blank=True)

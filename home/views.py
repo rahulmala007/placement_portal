@@ -29,6 +29,7 @@ def studentDetails(request, student_id):
 			placed = form.cleaned_data.get('placed')
 			company = form.cleaned_data.get('company')
 			sector = form.cleaned_data.get('sector')
+			roll=form.cleaned_data.get('roll')
 			profile = form.cleaned_data.get('profile')
 			day = form.cleaned_data.get('day')
 			slot = form.cleaned_data.get('slot')
@@ -37,8 +38,7 @@ def studentDetails(request, student_id):
 			student.sector = sector
 			student.profile = profile
 			student.branch.num+=1
-			if not placed or company is "" or sector is "" or profile is "":
-					return rende
+			
 
 			dobj = Day.objects.filter(dayNum=day, branch=student.branch)
 			# print(dobj)
@@ -82,6 +82,7 @@ def changestatus(request):
 		id = request.POST['student_id']
 		student = Student.objects.get(id=id)
 		student.placed = False
+		student.roll=''
 		student.company = ''
 		student.sector = ''
 		student.profile = ''
