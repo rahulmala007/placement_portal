@@ -91,6 +91,7 @@ def changestatus(request):
 	# return redirect('home:studentDetails' student.id')
 	return redirect('home:studentDetails', student_id= id)
 
+
 def search(request):
 	if request.method=="POST":
 		search_text=request.POST['search_text']
@@ -101,3 +102,10 @@ def search(request):
 		students=[]
 
 	return render(request,'home/ajax_search.html',{'students':students})
+
+def showStudent(request):
+	allstudents=Student.objects.all()
+	context={'allstudents':allstudents}
+	return render(request,'home/showStudent.html',context)
+
+
