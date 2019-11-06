@@ -164,3 +164,20 @@ def searchStudent(request):
 	return render(request,'home/ajax_searchStudent.html',{'students':students})
 
 
+def branchlist(request):
+
+	if request.method == "POST":
+		val = request.POST['val']
+		place=request.POST['place']
+		if place == "true":
+			students = Student.objects.filter(branch__branchName__contains=val,placed=True)
+		else:
+			students = Student.objects.filter(branch__branchName__contains=val)
+
+	else:
+		val = " "
+		students = []
+
+	return render(request, 'home/branchsearch.html', {'students': students})
+
+

@@ -5,17 +5,65 @@
 	<title>Students</title>
      <script src="{% static "home/jquery-3.4.1.js" %}"></script>
     <script src="{% static "home/ajax.js" %}"></script>
+     <script src="{% static "home/branchcheck.js" %}"></script>
 </head>
 
-<body>
-    <h3>Search here</h3>
+<div id ="sort">
+     <form id="branchsearchform">{% csrf_token %}
+  Placed<input id="placed"  type="checkbox" name="placed" value="placed" />
+    <br>
+
+         Branch:  <select name="Branch" id="select" >
+            <option></option>
+             <option value="CSE" id="CSE">CSE</option>
+            <option value="MNC" id="MNC">MNC</option>
+             <option value="ECE" id="ECE">ECE</option>
+             <option value="EEE" id="EEE">EEE</option>
+             <option value="ME" id="ME">ME</option>
+             <option value="CE" id="CE">CE</option>
+             <option value="CL" id="CL">CL</option>
+             <option value="EP" id="EP">EP</option>
+             <option value="CST" id="CST">CST</option>
+             <option value="BT" id="BT">BT</option>
+
+</select>
+    </form>
+</div>
+
+ <h3>Search here</h3>
     <form id="dsearchform">{% csrf_token %}
     <input type="text" id="search" name="search" />
     </form>
 
-    <div id="search_results"></div>
 
-	<ul id="mainlist">
+
+    <div id="search_results"></div>
+    <div id="branch_results"></div>
+
+    <div id="isplacedlist" style="display: none">
+        <ul >
+	{% for student in students %}
+        {% if student.placed is True %}
+	<li>Name:
+		<a href="{% url 'home:studentDetails' student.id %}">
+		 {{student.name}}
+		</a>
+		<br>
+		Branch: {{student.branch.get_branchName_display}}
+		<br>
+        Roll No: {{ student.roll}}
+		<hr>
+
+	</li>
+        {% endif %}
+	{% endfor %}
+	</ul>
+
+    </div>
+
+
+
+	<ul id="mainlist" >
 	{% for student in students %}
 	<li>Name:
 		<a href="{% url 'home:studentDetails' student.id %}">
@@ -35,8 +83,6 @@
     document.getElementById("dsearchform").reset();
 
 </script>
-
-
 </body>
 </html>
 
