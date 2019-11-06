@@ -4,11 +4,14 @@ from .forms import *
 from django.template import RequestContext
 from django.template.context_processors import csrf
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
 	return render(request, 'home/home.html')
 
+
+@login_required()
 def studentsList(request):
 
 	students = Student.objects.all()
@@ -18,6 +21,8 @@ def studentsList(request):
 
 	return render_to_response('home/studentsList.html',context)
 
+
+@login_required()
 def studentDetails(request, student_id):
 
 
