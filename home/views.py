@@ -107,6 +107,7 @@ def search(request):
 		students = Student.objects.filter(name__contains = search_text)
 		students |= Student.objects.filter(company__contains = search_text)
 		students |= Student.objects.filter(branch__branchName__contains = search_text)
+		students |= Student.objects.filter(roll__contains = search_text)
 
 		# stul = []
 
@@ -143,8 +144,11 @@ def search(request):
 
 def showStudent(request):
 	allstudents=Student.objects.all()
-	context={'allstudents':allstudents}
-	return render(request,'home/showStudent.html',context)
+	context={}
+	context.update(csrf(request))
+	context['allstudents']=Student.objects.all()
+	return render_to_response('home/showStudent.html',context)
+
 
 def searchStudent(request):
 	if request.method=="POST":
@@ -153,6 +157,7 @@ def searchStudent(request):
 		students = Student.objects.filter(name__contains = search_text)
 		students |= Student.objects.filter(company__contains = search_text)
 		students |= Student.objects.filter(branch__branchName__contains = search_text)
+		students |= Student.objects.filter(roll__contains = search_text)
 
 		
 
