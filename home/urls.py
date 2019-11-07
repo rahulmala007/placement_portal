@@ -12,5 +12,5 @@ urlpatterns = [
     path('search',views.search, name='search'),
     path('showStudent',views.showStudent, name='showStudent'),
     path('searchStudent',views.searchStudent,name='searchStudent'),
-
+    path('branchlist',views.branchlist,name="branchlist")
 ]
