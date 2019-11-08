@@ -3,18 +3,23 @@
 <html>
 <head>
 	<title>Students</title>
-     <script src="{% static "home/jquery-3.4.1.js" %}"></script>
-    <script src="{% static "home/ajax.js" %}"></script>
-     <script src="{% static "home/branchcheck.js" %}"></script>
+     <script src="{% static 'home/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'home/ajaxStudent.js' %}"></script>
+     <script src="{% static 'home/branchcheck.js' %}"></script>
 </head>
 
 <div id ="sort">
      <form id="branchsearchform">{% csrf_token %}
-  Placed<input id="placed"  type="checkbox" name="placed" value="placed" />
+  Placed<!-- <input id="placed"  type="checkbox" name="placed" value="placed" /> -->
+  <select name="PNP" id="selectP" >
+            <option value="" id="blank"></option>
+             <option value="True" id="Placed">Placed</option>
+            <option value="False" id="NPlaces">Not Placed</option>
+</select>
     <br>
 
          Branch:  <select name="Branch" id="select" >
-            <option></option>
+            <option value="" id="blank"></option>
              <option value="CSE" id="CSE">CSE</option>
             <option value="MNC" id="MNC">MNC</option>
              <option value="ECE" id="ECE">ECE</option>
@@ -32,7 +37,7 @@
 
  <h3>Search here</h3>
     <form id="dsearchform">{% csrf_token %}
-    <input type="text" id="search" name="search" />
+    <input type="text" id="searchStudent" name="search" />
     </form>
 
 
