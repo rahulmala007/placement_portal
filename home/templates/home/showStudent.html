@@ -2,70 +2,123 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Placement</title>
-	<script src="{% static "home/jquery-3.4.1.js" %}"></script>
-    <script src="{% static "home/ajaxStudent.js" %}"></script>
-	
+	<title>Students</title>
+     <script src="{% static 'home/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'home/ajaxStudent.js' %}"></script>
+     <script src="{% static 'home/branchcheck.js' %}"></script>
 </head>
-<body>
-	<h1>Placement Details Of Students</h1>
-    
 
-    <h3>Search here</h3>
-    <form id="dsearchform">{% csrf_token %}
-    <input type="text" id="searchStudent" name="searchStudent" />
+<div id ="sort">
+     <form id="branchsearchform">{% csrf_token %}
+  Placed<!-- <input id="placed"  type="checkbox" name="placed" value="placed" /> -->
+  <select name="PNP" id="selectP" >
+            <option value="" id="blank"></option>
+             <option value="True" id="Placed">Placed</option>
+            <option value="False" id="NPlaces">Not Placed</option>
+</select>
+    <br>
+
+         Branch:  <select name="Branch" id="select" >
+            <option value="" id="blank"></option>
+             <option value="CSE" id="CSE">CSE</option>
+            <option value="MNC" id="MNC">MNC</option>
+             <option value="ECE" id="ECE">ECE</option>
+             <option value="EEE" id="EEE">EEE</option>
+             <option value="ME" id="ME">ME</option>
+             <option value="CE" id="CE">CE</option>
+             <option value="CL" id="CL">CL</option>
+             <option value="EP" id="EP">EP</option>
+             <option value="CST" id="CST">CST</option>
+             <option value="BT" id="BT">BT</option>
+
+</select>
     </form>
-    
+</div>
+
+ <h3>Search here</h3>
+    <form id="dsearchform">{% csrf_token %}
+    <input type="text" id="searchStudent" name="search" />
+    </form>
+
+
+
     <div id="search_results"></div>
- 
+    <div id="branch_results"></div>
+
+    <div id="isplacedlist" style="display: none">
+        <ul >
+	{% for student in students %}
+        {% if student.placed is True %}
+	<li>Name:
+		<a href="{% url 'home:studentDetails' student.id %}">
+		 {{student.name}}
+		</a>
+		<br>
+		Branch: {{student.branch.get_branchName_display}}
+		<br>
+        Roll No: {{ student.roll}}
+		<hr>
+
+	</li>
+        {% endif %}
+	{% endfor %}
+	</ul>
+
+    </div>
+
+
+
+
     <ul id="mainlist">
     <table border="1" width="100%">
     <tr>
-	<td>Name</td>
-	<td>Program</td>
-	<td>Branch</td>
-	<td>Roll No.</td>
-	<td>Placed</td>
-	<td>Company</td>
-	<td>Day</td>
-	<td>Slot</td>
-	<td>Sector</td>
-	<td>Profile</td>
-	</tr>
-	{% for student in allstudents %}
+    <td>Name</td>
+    <td>Program</td>
+    <td>Branch</td>
+    <td>Roll No.</td>
+    <td>Placed</td>
+    <td>Company</td>
+    <td>Day</td>
+    <td>Slot</td>
+    <td>Sector</td>
+    <td>Profile</td>
+    </tr>
+    {% for student in students %}
 
-	<tr>
-	<td> {{ student.name }}</td>
-	<td> {{ student.programs }}</td>
-	<td> {{ student.branch }}</td>
-	<td>{{ student.roll }}</td>
-	{% if student.placed is False %}
-	<td> {{ "Not Placed" }}</td>
-	<td> {{ "-" }}</td>
-	<td> {{ "-" }}</td>
-	<td> {{ "-" }}</td>
-	<td> {{ "-"}}</td>
-	<td> {{ "-" }}</td>
-	{% else %}
-	<td> {{ "Placed" }}</td>
-	<td> {{ student.company }}</td>
-	<td> {{ student.day }}</td>
-	<td> {{ student.slot }}</td>
-	<td> {{ student.sector}}</td>
-	<td> {{ student.profile }}</td>
-	{% endif %}
-	</tr>
-	{% endfor %}
-	</table>
+    <tr>
+    <td>
+         {{student.name}}
+        </td>
+    <td> {{ student.programs }}</td>
+    <td> {{ student.branch }}</td>
+    <td>{{ student.roll }}</td>
+    {% if student.placed is False %}
+    <td> {{ "Not Placed" }}</td>
+    <td> {{ "-" }}</td>
+    <td> {{ "-" }}</td>
+    <td> {{ "-" }}</td>
+    <td> {{ "-"}}</td>
+    <td> {{ "-" }}</td>
+    {% else %}
+    <td> {{ "Placed" }}</td>
+    <td> {{ student.company }}</td>
+    <td> {{ student.day }}</td>
+    <td> {{ student.slot }}</td>
+    <td> {{ student.sector}}</td>
+    <td> {{ student.profile }}</td>
+    {% endif %}
+    </tr>
+    {% endfor %}
+    </table>
 
 
-	</ul>
+    </ul>
+
+<script>
+    document.getElementById("dsearchform").reset();
+
+</script>
+</body>
+</html>
 
 
-	<script>
-	document.getElementById("dsearchform").reset();
-
-	</script>
-
-	</body>
-	</html>

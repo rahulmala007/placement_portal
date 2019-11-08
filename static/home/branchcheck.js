@@ -1,13 +1,18 @@
 $(document).change(function() {
     var optionSelected = $('#select').find("option:selected");
     var valueSelected  = optionSelected.val();
-    var place=$('#placed').is(':checked');
+
+    var PSelected = $('#selectP').find("option:selected");
+    var valuePSelected  = PSelected.val();
+
+
+    $('#searchStudent').val('');
             $.ajax({
                 type: "POST",
                 url: "branchlist",
                 data: {
                     'val': valueSelected,
-                    'place':place,
+                    'place':valuePSelected,
                     'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
                 },
                 success:searchSuccess,
