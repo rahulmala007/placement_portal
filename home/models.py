@@ -74,7 +74,7 @@ class Day(models.Model):
 	branch=models.ForeignKey(Branch,on_delete=models.CASCADE)
 
 	def __str__(self):
-		return f'{self.dayNum}-{self.branch.branchName}'
+		return {self.dayNum}-{self.branch.branchName}
 
 
 

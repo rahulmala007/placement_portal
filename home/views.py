@@ -5,11 +5,74 @@ from django.template import RequestContext
 from django.template.context_processors import csrf
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from chartit import DataPool, Chart, PivotDataPool, PivotChart
 
 
 def index(request):
-	return render(request, 'home/home.html')
+    branch_data =  DataPool(
+           series=
+            [{'options': {
+            'source': Branch.objects.all()},
+                'terms': [{'branch': 'branchName',
+                'placed': 'num'}]
+                },
 
+             ]) 
+
+    br_cht = Chart(
+            datasource = branch_data,
+            series_options =
+              [{'options':{
+                  'type': 'column',
+                  'stacking': False},
+                'terms':{
+                  'branch': [
+                    'placed']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Number of Students Placed'},
+               'xAxis': {
+                   'title':{'text': 'Branch'}},
+               'yAxis': {
+                   'title': {'text': 'Students Placed'}},
+                'legend': {
+                    'enabled': True},
+                'credits': {
+                    'enabled': True}},)
+                   
+    pi_cht = Chart(
+            datasource = branch_data,
+            series_options =
+              [{'options':{
+                  'type': 'pie',
+                  'plotBorderWidth': 1,
+                  'zoomType': 'xy',
+                 
+                  'legend':{
+                      'enabled': True,
+                  }},
+                  
+                'terms':{
+                  'branch': [
+                    'placed']
+                  }}],
+    
+            chart_options =
+              {'title': {
+                   'text': 'Number of Students Placed - Pie Chart'},
+               'xAxis': {
+                   'title':{'text': 'Branch'}},
+               'yAxis': {
+                   'title': {'text': 'Placed'}},
+                   
+                'legend': {
+                    'enabled': True},
+                'credits': {
+                    'enabled': True}},)
+
+    return render(request,'check.html', 
+        {'chart_list': [br_cht, pi_cht]})
 
 @login_required()
 def studentsList(request):
