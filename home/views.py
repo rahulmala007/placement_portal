@@ -5,19 +5,118 @@ from django.template import RequestContext
 from django.template.context_processors import csrf
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from chartit import DataPool, Chart, PivotDataPool, PivotChart
 
 
 def index(request):
-	return render(request, 'home/home.html')
+    branch_data =  DataPool(
+           series=
+            [{'options': {
+            'source': Branch.objects.all()},
+                'terms': [{'branch': 'branchName',
+                'placed': 'num'}]
+                },
+
+             ]) 
+
+    br_cht = Chart(
+            datasource = branch_data,
+            series_options =
+              [{'options':{
+                  'type': 'column',
+                  'stacking': False},
+                'terms':{
+                  'branch': [
+                    'placed']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Number of Students Placed'},
+               'xAxis': {
+                   'title':{'text': 'Branch'}},
+               'yAxis': {
+                   'title': {'text': 'Students Placed'}},
+                'legend': {
+                    'enabled': True},
+                'credits': {
+                    'enabled': True}},)
+                   
+    pi_cht = Chart(
+            datasource = branch_data,
+            series_options =
+              [{'options':{
+                  'type': 'pie',
+                  'plotBorderWidth': 1,
+                  'zoomType': 'xy',
+                 
+                  'legend':{
+                      'enabled': True,
+                  }},
+                  
+                'terms':{
+                  'branch': [
+                    'placed']
+                  }}],
+    
+            chart_options =
+              {'title': {
+                   'text': 'Number of Students Placed - Pie Chart'},
+               'xAxis': {
+                   'title':{'text': 'Branch'}},
+               'yAxis': {
+                   'title': {'text': 'Placed'}},
+                   
+                'legend': {
+                    'enabled': True},
+                'credits': {
+                    'enabled': True}},)
+    
+
+    day_data =  DataPool(
+           series=
+            [{'options': {
+            'source': DayTotal.objects.all()},
+                'terms': [{'day': 'dayNum',
+                'placed': 'num'}]
+                },
+
+             ]) 
+
+    day_cht = Chart(
+            datasource = day_data,
+            series_options =
+              [{'options':{
+                  'type': 'column',
+                  'stacking': False},
+                'terms':{
+                  'day': [
+                    'placed']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Number of Students Placed: Day-Wise'},
+               'xAxis': {
+                   'title':{'text': 'Day'}},
+               'yAxis': {
+                   'title': {'text': 'Students Placed'}},
+                'legend': {
+                    'enabled': True},
+                'credits': {
+                    'enabled': False}},)
+                   
+   
+
+    return render(request,'check.html', 
+        {'chart_list': [br_cht, pi_cht,day_cht]})
 
 
 @login_required()
 def studentsList(request):
 
-	students = Student.objects.all()
+	students = Student.objects.all().order_by('roll')
 	context = {}
 	context.update(csrf(request))
-	context['students']=Student.objects.all()
+	context['students']=students
 
 	return render_to_response('home/studentsList.html',context)
 
@@ -34,7 +133,7 @@ def studentDetails(request, student_id):
 			placed = form.cleaned_data.get('placed')
 			company = form.cleaned_data.get('company')
 			sector = form.cleaned_data.get('sector')
-			roll=form.cleaned_data.get('roll')
+			# roll=form.cleaned_data.get('roll')
 			profile = form.cleaned_data.get('profile')
 			day = form.cleaned_data.get('day')
 			slot = form.cleaned_data.get('slot')
@@ -43,6 +142,8 @@ def studentDetails(request, student_id):
 			student.sector = sector
 			student.profile = profile
 			student.branch.num+=1
+			student.day=day
+			student.slot=slot
 			
 
 			dobj = Day.objects.filter(dayNum=day, branch=student.branch)
@@ -52,19 +153,38 @@ def studentDetails(request, student_id):
 
 				Day.objects.create(dayNum=day, branch=student.branch)
 				dobj = Day.objects.get(dayNum=day, branch=student.branch)
+				DayTotal.objects.create(dayNum=day)
+				numObj = DayTotal.objects.get(dayNum=student.day)
+
 			else:
 				dobj = dobj[0]
+				numObj = DayTotal.objects.get(dayNum=student.day)
+
 
 			dobj.num += 1
 			dobj.save()
+
+			# numObj = DayTotal.objects.get(daynum=student.day)
+			numObj.num+=1;
+			# print (student.daynum)
+			# print("check")
+			numObj.save();
 			# print (student.daynum)
 			# print("check")
 			student.save()
 			student.branch.save()
+			# student.day.save()
 			
 		return redirect('home:students')
 	else:
-		form = StudentPlacedForm()
+		data = {
+		'placed':True,
+		'company':student.company,
+			'sector':student.sector,
+			'profile':student.profile,	
+			'day':student.day,
+			'slot':student.slot}
+		form = StudentPlacedForm(initial=data)
 		if not student.placed:
 
 			context = {
@@ -87,14 +207,35 @@ def changestatus(request):
 		id = request.POST['student_id']
 		student = Student.objects.get(id=id)
 		student.placed = False
-		student.roll=''
-		student.company = ''
-		student.sector = ''
-		student.profile = ''
-		student.slot = 'S1'
-		student.day = 0
+		# student.company = ''
+		# student.sector = ''
+		# student.profile = ''
+		# student.slot = 'S1'
+		# student.day = 0
+		dobj = Day.objects.get(dayNum=student.day, branch=student.branch)
+			# print(dobj)
+			# print("CCCCCCCCCCCCCCCCCCCC")
+		
+		# dobj = dobj[0]
+		student.branch.num-=1
+		
 
+		dobj.num -= 1
+		dobj.save()
+		# if dobj.num<=0:
+		# 	dobj.delete()
+		
+
+		numObj = DayTotal.objects.get(dayNum=student.day)
+		numObj.num-=1;
+		# print (student.daynum)
+		# print("check")
+		numObj.save();
+		student.branch.save()
 		student.save()
+
+
+
 
 	# return redirect('home:studentDetails' student.id')
 	return redirect('home:studentDetails', student_id= id)
@@ -143,10 +284,10 @@ def search(request):
 	return render(request,'home/ajax_search.html',{'students':students})
 
 def showStudent(request):
-	allstudents=Student.objects.all()
+	
 	context={}
 	context.update(csrf(request))
-	context['students']=Student.objects.all()
+	context['students']=Student.objects.all().order_by('roll')
 	return render_to_response('home/showStudent.html',context)
 
 
@@ -188,7 +329,7 @@ def searchStudent(request):
 		search_text=" "
 		students=[]
 
-	return render(request,'home/ajax_search.html',{'students':students})
+	return render(request,'home/ajax_searchStudent.html',{'students':students})
 
 
 def branchlist(request):

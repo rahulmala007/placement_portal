@@ -4,8 +4,10 @@
 <head>
 	<title>Students</title>
      <script src="{% static 'home/jquery-3.4.1.js' %}"></script>
-    <script src="{% static 'home/ajaxStudent.js' %}"></script>
+     <script src="{% static 'home/ajaxStudent.js' %}"></script>
      <script src="{% static 'home/branchcheck.js' %}"></script>
+     <script src="{% static 'home/tableStyle.js' %}"></script>
+     <link rel="stylesheet" href="{% static 'home/tableStyle.css' %}">
 </head>
 
 <div id ="sort">
@@ -50,9 +52,9 @@
 	{% for student in students %}
         {% if student.placed is True %}
 	<li>Name:
-		<a href="{% url 'home:studentDetails' student.id %}">
+		
 		 {{student.name}}
-		</a>
+		
 		<br>
 		Branch: {{student.branch.get_branchName_display}}
 		<br>
@@ -69,50 +71,50 @@
 
 
 
-    <ul id="mainlist">
-    <table border="1" width="100%">
-    <tr>
-    <td>Name</td>
-    <td>Program</td>
-    <td>Branch</td>
-    <td>Roll No.</td>
-    <td>Placed</td>
-    <td>Company</td>
-    <td>Day</td>
-    <td>Slot</td>
-    <td>Sector</td>
-    <td>Profile</td>
-    </tr>
+    <div id="mainlist">
+<table>
+  <thead>
+  <tr class="table-headers">
+    <th>Name</th>
+    <th>Program</th>
+    <th>Branch</th>
+    <th>Roll No.</th>
+    <th>Placed</th>
+    <th>Company</th>
+    <th>Day</th>
+    <th>Slot</th>
+    <th>Sector</th>
+    <th>Profile</th>
+  </tr>
+  </thead>
+  <tbody>
     {% for student in students %}
-
-    <tr>
-    <td>
+      <td>
          {{student.name}}
-        </td>
-    <td> {{ student.programs }}</td>
-    <td> {{ student.branch }}</td>
-    <td>{{ student.roll }}</td>
-    {% if student.placed is False %}
-    <td> {{ "Not Placed" }}</td>
-    <td> {{ "-" }}</td>
-    <td> {{ "-" }}</td>
-    <td> {{ "-" }}</td>
-    <td> {{ "-"}}</td>
-    <td> {{ "-" }}</td>
-    {% else %}
-    <td> {{ "Placed" }}</td>
-    <td> {{ student.company }}</td>
-    <td> {{ student.day }}</td>
-    <td> {{ student.slot }}</td>
-    <td> {{ student.sector}}</td>
-    <td> {{ student.profile }}</td>
+      </td>
+      <td> {{ student.programs }}</td>
+      <td> {{ student.branch }}</td>
+      <td>{{ student.roll }}</td>
+      {% if student.placed is False %}
+      <td> {{ "Not Placed" }}</td>
+      <td> {{ "-" }}</td>
+      <td> {{ "-" }}</td>
+      <td> {{ "-" }}</td>
+      <td> {{ "-"}}</td>
+      <td> {{ "-" }}</td>
+      {% else %}
+      <td> {{ "Placed" }}</td>
+      <td> {{ student.company }}</td>
+      <td> {{ student.day }}</td>
+      <td> {{ student.slot }}</td>
+      <td> {{ student.sector}}</td>
+      <td> {{ student.profile }}</td>
     {% endif %}
     </tr>
-    {% endfor %}
-    </table>
-
-
-    </ul>
+   {% endfor %}
+  </tbody>
+</table>
+</div>
 
 <script>
     document.getElementById("dsearchform").reset();

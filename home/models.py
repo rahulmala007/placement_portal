@@ -76,6 +76,15 @@ class Day(models.Model):
 	def __str__(self):
 		return f'{self.dayNum}-{self.branch.branchName}'
 
+class DayTotal(models.Model):
+
+	dayNum=models.IntegerField(validators=[MinValueValidator(0)],default=0)
+	num = models.IntegerField(default=0,validators=[MinValueValidator(0)])
+
+	
+	def __str__(self):
+		return f'{self.dayNum}-Total'
+
 
 
 
