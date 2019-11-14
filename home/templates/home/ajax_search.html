@@ -1,45 +1,49 @@
 
 	{% if students.count > 0 %}
 
-<table border="1" width="100%">
-<tr>
-<td>Name</td>
-<td>Program</td>
-<td>Branch</td>
-<td>Roll No.</td>
-<td>Placed</td>
-<td>Company</td>
-<td>Day</td>
-<td>Slot</td>
-<td>Sector</td>
-<td>Profile</td>
-</tr>
-
-{% for student in students %}
-<tr>
-<td> <a href="{% url 'home:studentDetails' student.id %}"> {{ student.name }}</a></td>
-
-<td> {{ student.programs }}</td>
-<td> {{ student.branch }}</td>
-<td>{{ student.roll }}</td>
-{% if student.placed is False %}
-<td> {{ "Not Placed" }}</td>
-<td> {{ "-" }}</td>
-<td> {{ "-" }}</td>
-<td> {{ "-" }}</td>
-<td> {{ "-"}}</td>
-<td> {{ "-" }}</td>
-{% else %}
-<td> {{ "Placed" }}</td>
-<td> {{ student.company }}</td>
-<td> {{ student.day }}</td>
-<td> {{ student.slot }}</td>
-<td> {{ student.sector}}</td>
-<td> {{ student.profile }}</td>
-{% endif %}
-</tr>
-{% endfor %}
+<table>
+  <thead>
+  <tr class="table-headers">
+    <th>Name</th>
+    <th>Program</th>
+    <th>Branch</th>
+    <th>Roll No.</th>
+    <th>Placed</th>
+    <th>Company</th>
+    <th>Day</th>
+    <th>Slot</th>
+    <th>Sector</th>
+    <th>Profile</th>
+  </tr>
+  </thead>
+  <tbody>
+    {% for student in students %}
+      <td> <a href="{% url 'home:studentDetails' student.id %}">
+         {{student.name}}
+        </a></td>
+      <td> {{ student.programs }}</td>
+      <td> {{ student.branch }}</td>
+      <td>{{ student.roll }}</td>
+      {% if student.placed is False %}
+      <td> {{ "Not Placed" }}</td>
+      <td> {{ "-" }}</td>
+      <td> {{ "-" }}</td>
+      <td> {{ "-" }}</td>
+      <td> {{ "-"}}</td>
+      <td> {{ "-" }}</td>
+      {% else %}
+      <td> {{ "Placed" }}</td>
+      <td> {{ student.company }}</td>
+      <td> {{ student.day }}</td>
+      <td> {{ student.slot }}</td>
+      <td> {{ student.sector}}</td>
+      <td> {{ student.profile }}</td>
+    {% endif %}
+    </tr>
+   {% endfor %}
+  </tbody>
 </table>
+
 {% else %}
 <li>Nothing to show</li>
 {% endif %}
