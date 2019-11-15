@@ -285,6 +285,53 @@ def searchStudent(request):
 	return render(request,'home/ajax_searchStudent.html',{'students':students})
 
 
+
+def searchStudentList(request):
+	if request.method=="POST":
+		search_text=request.POST['search_text']
+		val = request.POST['val']
+		place=request.POST['place']
+		# print(search_text)
+		# print(val)
+		
+
+
+		
+		students = Student.objects.filter(name__contains = search_text)
+		students |= Student.objects.filter(company__contains = search_text)
+		students |= Student.objects.filter(branch__branchName__contains = search_text)
+		students |= Student.objects.filter(roll__contains = search_text)
+
+		if val:
+			if place == "True":
+				students = students.filter(branch__branchName=val,placed=True)
+			elif place == "False" :
+				students = students.filter(branch__branchName=val,placed=False)
+			else:
+				students = students.filter(branch__branchName=val)
+		else:
+			if place == "True":
+				students = students.filter(placed=True)
+			elif place == "False" :
+				students = students.filter(placed=False)
+			else:
+				students = students
+
+		
+
+
+	else:
+		search_text=" "
+		students=[]
+
+	return render(request,'home/ajax_search.html',{'students':students})
+
+
+
+
+
+
+
 def branchlist(request):
 
 	if request.method == "POST":
@@ -311,5 +358,42 @@ def branchlist(request):
 		students = []
 
 	return render(request, 'home/ajax_search.html', {'students': students})
+
+
+
+def branchlistshow(request):
+
+	if request.method == "POST":
+		val = request.POST['val']
+		place=request.POST['place']
+
+
+		if val:
+			if place == "True":
+				students = Student.objects.filter(branch__branchName=val,placed=True)
+			elif place == "False" :
+				students = Student.objects.filter(branch__branchName=val,placed=False)
+			else:
+				students = Student.objects.filter(branch__branchName=val)
+		else:
+			if place == "True":
+				students = Student.objects.filter(placed=True)
+			elif place == "False" :
+				students = Student.objects.filter(placed=False)
+			else:
+				students = Student.objects.all()
+
+
+
+
+		
+
+
+
+	else:
+		val = " "
+		students = []
+
+	return render(request, 'home/ajax_searchStudent.html', {'students': students})
 
 

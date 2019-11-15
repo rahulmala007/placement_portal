@@ -9,7 +9,7 @@ $(function() {
 
         $.ajax({
             type: "POST",
-            url: "searchStudentList",
+            url: "searchStudent",
             data: {
                 'search_text' : $('#searchStudent').val(),
                 'val': valueSelected,
