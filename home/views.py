@@ -160,17 +160,8 @@ def studentDetails(request, student_id):
 				DayTotal.objects.create(dayNum=day)
 				numObj = DayTotal.objects.get(dayNum=day)
 			
-			elif numObj.count()>=1:
-
-				count = 0;
-				numObj = DayTotal.objects.filter(dayNum=day)
-				for i in numObj:
-					count+=i.num
-					i.delete()
-
-				DayTotal.objects.create(dayNum=day)	
-				numObj = DayTotal.objects.get(dayNum=day)
-				numObj.num=count
+			else:
+				numObj = numObj[0]
 
 			dobj.num += 1
 			dobj.save()
