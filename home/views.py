@@ -104,8 +104,6 @@ def index(request):
                 'credits': {
                     'enabled': False}},)
                    
-   
-
     return render(request,'check.html', 
         {'chart_list': [br_cht, pi_cht,day_cht]})
 
@@ -133,7 +131,6 @@ def studentDetails(request, student_id):
 			placed = form.cleaned_data.get('placed')
 			company = form.cleaned_data.get('company')
 			sector = form.cleaned_data.get('sector')
-			# roll=form.cleaned_data.get('roll')
 			profile = form.cleaned_data.get('profile')
 			day = form.cleaned_data.get('day')
 			slot = form.cleaned_data.get('slot')
@@ -147,34 +144,42 @@ def studentDetails(request, student_id):
 			
 
 			dobj = Day.objects.filter(dayNum=day, branch=student.branch)
-			# print(dobj)
-			# print("CCCCCCCCCCCCCCCCCCCC")
+			
 			if dobj.count()==0:
 
 				Day.objects.create(dayNum=day, branch=student.branch)
 				dobj = Day.objects.get(dayNum=day, branch=student.branch)
-				DayTotal.objects.create(dayNum=day)
-				numObj = DayTotal.objects.get(dayNum=student.day)
 
 			else:
 				dobj = dobj[0]
-				numObj = DayTotal.objects.get(dayNum=student.day)
 
+			numObj = DayTotal.objects.filter(dayNum=day)
+			
+			if numObj.count()==0:
+				
+				DayTotal.objects.create(dayNum=day)
+				numObj = DayTotal.objects.get(dayNum=day)
+			
+			elif numObj.count()>=1:
+
+				count = 0;
+				numObj = DayTotal.objects.filter(dayNum=day)
+				for i in numObj:
+					count+=i.num
+					i.delete()
+
+				DayTotal.objects.create(dayNum=day)	
+				numObj = DayTotal.objects.get(dayNum=day)
+				numObj.num=count
 
 			dobj.num += 1
 			dobj.save()
 
-			# numObj = DayTotal.objects.get(daynum=student.day)
 			numObj.num+=1;
-			# print (student.daynum)
-			# print("check")
 			numObj.save();
-			# print (student.daynum)
-			# print("check")
 			student.save()
 			student.branch.save()
-			# student.day.save()
-			
+	
 		return redirect('home:students')
 	else:
 		data = {
@@ -198,7 +203,6 @@ def studentDetails(request, student_id):
 			'student': student,
 			}
 
-
 		return render(request, 'home/studentDetails.html', context)
 
 
@@ -207,37 +211,22 @@ def changestatus(request):
 		id = request.POST['student_id']
 		student = Student.objects.get(id=id)
 		student.placed = False
-		# student.company = ''
-		# student.sector = ''
-		# student.profile = ''
-		# student.slot = 'S1'
-		# student.day = 0
+
 		dobj = Day.objects.get(dayNum=student.day, branch=student.branch)
-			# print(dobj)
-			# print("CCCCCCCCCCCCCCCCCCCC")
-		
-		# dobj = dobj[0]
+	
 		student.branch.num-=1
 		
 
 		dobj.num -= 1
 		dobj.save()
-		# if dobj.num<=0:
-		# 	dobj.delete()
 		
-
 		numObj = DayTotal.objects.get(dayNum=student.day)
 		numObj.num-=1;
-		# print (student.daynum)
-		# print("check")
+
 		numObj.save();
 		student.branch.save()
 		student.save()
 
-
-
-
-	# return redirect('home:studentDetails' student.id')
 	return redirect('home:studentDetails', student_id= id)
 
 
@@ -249,33 +238,6 @@ def search(request):
 		students |= Student.objects.filter(company__contains = search_text)
 		students |= Student.objects.filter(branch__branchName__contains = search_text)
 		students |= Student.objects.filter(roll__contains = search_text)
-
-		# stul = []
-
-		# BRANCH_CHOICES = [
-		# 	('CSE', 'Computer Science and Engineering'),
-		# 	('MNC', 'Mathematics and Computing'),
-		# 	('ECE', 'Electronics and Communication Engineering'),
-		# 	('EEE', 'Electronics and Electrical Engineering'),
-		# 	('ME', 'Mechanical Engineering'),
-		# 	('CE', 'Civil Engineering'),
-		# 	('CL', 'Chemical Engineering'),
-		# 	('EP' , 'Engineering Physics'),
-		# 	('CST','Chemical Science and Technology'),
-		# 	('BT','Biotechnology'),
-		# ]
-
-		# for tup in BRANCH_CHOICES:
-		# 	if search_text in tup[1]:
-				
-				
-
-		# for stu in Student.objects.all():
-		# 	if search_text in stu.branch.get_branchName_display():
-		# 		stul.append(stu);
-
-		# students |=stu
-
 
 	else:
 		search_text=" "
@@ -296,11 +258,6 @@ def searchStudent(request):
 		search_text=request.POST['search_text']
 		val = request.POST['val']
 		place=request.POST['place']
-		# print(search_text)
-		# print(val)
-		
-
-
 		
 		students = Student.objects.filter(name__contains = search_text)
 		students |= Student.objects.filter(company__contains = search_text)
@@ -321,10 +278,6 @@ def searchStudent(request):
 				students = students.filter(placed=False)
 			else:
 				students = students
-
-		
-
-
 	else:
 		search_text=" "
 		students=[]
@@ -353,14 +306,6 @@ def branchlist(request):
 				students = Student.objects.filter(placed=False)
 			else:
 				students = Student.objects.all()
-
-
-
-
-		
-
-
-
 	else:
 		val = " "
 		students = []
